@@ -1,4 +1,6 @@
 {
   "edge": { "branch": "master", "commit": "4fead634946186a21ca7f406b213896e596fbd93" },
-  "lazy.nvim": { "branch": "main", "commit": "3ad55ae678876516156cca2f361c51f7952a924b" }
+  "lazy.nvim": { "branch": "main", "commit": "3ad55ae678876516156cca2f361c51f7952a924b" },
+  "lexima.vim": { "branch": "master", "commit": "1f5dd656018f83ad03bddda216bd5c04d23ba57d" },
+  "nvim-surround": { "branch": "main", "commit": "211eaad7c6d01ef4ac02cba9052b3082ec232101" }
 }
