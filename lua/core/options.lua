@@ -11,6 +11,7 @@ local options = {
 	showtabline = 2,
 	smartcase = true,
 	smartindent = true,
+  signcolumn = "yes",
 	splitbelow = true,
 	splitright = true,
 	swapfile = false,
