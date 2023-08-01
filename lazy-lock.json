@@ -1,0 +1,4 @@
+{
+  "edge": { "branch": "master", "commit": "4fead634946186a21ca7f406b213896e596fbd93" },
+  "lazy.nvim": { "branch": "main", "commit": "3ad55ae678876516156cca2f361c51f7952a924b" }
+}
