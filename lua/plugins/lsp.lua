@@ -5,7 +5,6 @@ return {
     dependencies = {
       { "folke/neoconf.nvim", cmd = "Neoconf", config = true },
       { "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
-      "Shougo/ddc-source-nvim-lsp",
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       { "simrat39/rust-tools.nvim", ft = { "rust" }, opts = {} }
@@ -115,7 +114,7 @@ return {
       local capabilities = vim.tbl_deep_extend(
         "force",
         {},
-        require("ddc_nvim_lsp").make_client_capabilities(),
+        require("cmp_nvim_lsp").default_capabilities(),
         vim.lsp.protocol.make_client_capabilities(),
         {},
         opts.capabilities or {}
