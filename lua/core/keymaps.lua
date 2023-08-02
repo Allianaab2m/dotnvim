@@ -12,3 +12,9 @@ key("n", "H", "<Cmd>bprev<CR>", opts)
 
 key("v", "<", "<gv", opts)
 key("v", ">", ">gv", opts)
+
+--Telescope
+key("n", ";f", "<Cmd>Telescope find_files<CR>", opts)
+key("n", ";g", "<Cmd>Telescope kensaku<CR>", opts)
+key("n", ";lg", "<Cmd>Telescope live_grep<CR>", opts)
+key("n", ";b", "<Cmd>Telescope buffers<CR>", opts)
