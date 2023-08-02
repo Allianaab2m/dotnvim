@@ -6,6 +6,9 @@ return {
 		"nvim-lua/plenary.nvim",
 		{
       "Allianaab2m/telescope-kensaku.nvim",
+      dependencies = {
+        "lambdalisue/kensaku.vim"
+      },
 			config = function()
 				require("telescope").load_extension("kensaku")
 			end,
