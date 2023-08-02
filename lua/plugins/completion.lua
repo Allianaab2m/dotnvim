@@ -12,7 +12,7 @@ return {
 			"hrsh7th/cmp-vsnip",
 			"rinx/cmp-skkeleton",
 			"rafamadriz/friendly-snippets",
-			-- "hrsh7th/cmp-cmdline",
+			"hrsh7th/cmp-cmdline",
 		},
 		opts = function()
 			local cmp = require("cmp")
@@ -114,8 +114,8 @@ return {
 						cmp.config.compare.order,
 					},
 				},
-			}
-				--[[cmp.setup.cmdline("/", {
+			},
+				cmp.setup.cmdline("/", {
 					mapping = cmp.mapping.preset.cmdline(),
 					sources = {
 						name = "buffer",
@@ -133,7 +133,7 @@ return {
 						{ name = "buffer" },
 						{ name = "cmdline" },
 					}),
-				})]]
+				})
 		end,
 	},
 }
