@@ -233,4 +233,13 @@ return {
       }
     }
   },
+  {
+    "lewis6991/gitsigns.nvim",
+    opts = true,
+    event = "VeryLazy"
+  },
+  {
+    "tpope/vim-fugitive",
+    cmds = "Git"
+  }
 }
