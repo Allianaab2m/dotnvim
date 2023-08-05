@@ -58,4 +58,33 @@ return {
 			vim.cmd([[highlight FuzzyMotionSubChar guifg=#6CB6EB]])
 		end,
 	},
+	{
+		"lambdalisue/gin.vim",
+		cmd = {
+			"Gin",
+			"GinBuffer",
+			"GinBranch",
+			"GinBrowse",
+			"GinCd",
+			"GinLcd",
+			"GinTcd",
+			"GinChaperon",
+			"GinDiff",
+			"GinEdit",
+			"GinLog",
+			"GinPatch",
+			"GinStatus",
+		},
+		dependencies = {
+			"vim-denops/denops.vim",
+		},
+		config = function()
+			require("denops-lazy").load("gin.vim")
+		end,
+	},
+	{
+		"numToStr/Comment.nvim",
+		key = { { "n", "gc" }, { "n", "gb" } },
+		opts = true,
+	},
 }
