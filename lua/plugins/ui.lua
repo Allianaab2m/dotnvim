@@ -26,36 +26,36 @@ return {
 		opts = {
 			views = {
 				cmdline_popup = {
-          position = {
-            row = 5,
-            col = "50%"
-          },
-          size = {
-            width = 60,
-            height = "auto"
-          },
-          border = {
-            style = "single"
-          }
-        },
-        popupmenu = {
-          relative = "editor",
-          position = {
-            row = 8,
-            col = "50%"
-          },
-          size = {
-            width = 60,
-            height = 10,
-          },
-          border = {
-            style = "single",
-            padding = { 0, 1 }
-          },
-          win_options = {
-            winhighlight = { Normal = "Normal",  FloatBorder = "MoreMsg" }
-          }
-        }
+					position = {
+						row = 5,
+						col = "50%",
+					},
+					size = {
+						width = 60,
+						height = "auto",
+					},
+					border = {
+						style = "single",
+					},
+				},
+				popupmenu = {
+					relative = "editor",
+					position = {
+						row = 8,
+						col = "50%",
+					},
+					size = {
+						width = 60,
+						height = 10,
+					},
+					border = {
+						style = "single",
+						padding = { 0, 1 },
+					},
+					win_options = {
+						winhighlight = { Normal = "Normal", FloatBorder = "MoreMsg" },
+					},
+				},
 			},
 			lsp = {
 				override = {
@@ -151,15 +151,8 @@ return {
 	{
 		"nvim-tree/nvim-web-devicons",
 		event = "VeryLazy",
-		dependencies = {
-			{
-				dir = "~/ghq/github.com/Allianaab2m/nvim-material-icon-v3",
-			},
-		},
 		config = function()
-			require("nvim-web-devicons").setup({
-				override = require("nvim-material-icon").get_icons(),
-			})
+			require("nvim-web-devicons").setup({})
 		end,
 	},
 	{
@@ -220,26 +213,45 @@ return {
 			}
 		end,
 	},
-  {
-    "mvllow/modes.nvim",
-    tag = "v0.2.0",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      colors = {
-        copy = "#DEB974",
-        delete = "#EC7279",
-        insert = "#A0C980",
-        visual = "#D38AEA",
-      }
-    }
-  },
-  {
-    "lewis6991/gitsigns.nvim",
-    opts = true,
-    event = "VeryLazy"
-  },
-  {
-    "tpope/vim-fugitive",
-    cmds = "Git"
-  }
+	{
+		"mvllow/modes.nvim",
+		tag = "v0.2.0",
+		event = { "BufReadPost", "BufNewFile" },
+		opts = {
+			colors = {
+				copy = "#DEB974",
+				delete = "#EC7279",
+				insert = "#A0C980",
+				visual = "#D38AEA",
+			},
+		},
+	},
+	{
+		"lewis6991/gitsigns.nvim",
+		opts = true,
+		event = "VeryLazy",
+	},
+	{
+		"tpope/vim-fugitive",
+		cmd = "Git",
+	},
+	{
+		"akinsho/toggleterm.nvim",
+		cmd = "ToggleTerm",
+		opts = true,
+	},
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		event = { "BufWinEnter" },
+		config = function()
+			vim.opt.list = true
+			vim.opt.listchars:append("space:⋅")
+			vim.opt.listchars:append("eol:↴")
+			require("indent_blankline").setup({
+				space_char_blankline = " ",
+				show_current_context = true,
+				show_current_context_start = true,
+			})
+		end,
+	},
 }

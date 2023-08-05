@@ -58,6 +58,12 @@ function M.lsp_disable(server, cond)
 	)
 end
 
+for _, mode in pairs({ "n", "v", "i", "s", "o", "c", "t", "x" }) do
+  M[mode .. "map"] = function(lhs, rhs, opts)
+    vim.keymap.set(mode, lhs, rhs, opts or { silent = true })
+  end
+end
+
 M.icons = {
 	modes = {
 		n = " ",

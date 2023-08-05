@@ -1,19 +1,17 @@
 return {
-  { "vim-denops/denops.vim", event = { "VeryLazy" } },
-  {
-    "yuki-yano/denops-lazy.nvim",
-    lazy = false,
-    opts = true
-  },
-  { "tani/vim-artemis" },
+	{ "vim-denops/denops.vim", lazy = false },
 	{
-		"lambdalisue/kensaku.vim",
-		dependencies = {
-			"vim-denops/denops.vim",
-		},
+		"yuki-yano/denops-lazy.nvim",
+	},
+	{ "tani/vim-artemis" },
+	{ "nvim-lua/plenary.nvim", lazy = false },
+	{
+		"m4xshen/hardtime.nvim",
+		lazy = false,
 		config = function()
-			require("denops-lazy").load("kensaku.vim")
+			require("hardtime").setup({
+				disabled_filetypes = { "qf", "netrw", "lazy", "mason", "oil", "toggleterm" },
+			})
 		end,
 	},
-  { "nvim-lua/plenary.nvim", lazy = false }
 }
