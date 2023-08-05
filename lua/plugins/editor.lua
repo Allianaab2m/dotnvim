@@ -84,7 +84,7 @@ return {
 	},
 	{
 		"numToStr/Comment.nvim",
-		key = { { "n", "gc" }, { "n", "gb" } },
+		keys = { "g" },
 		opts = true,
 	},
 }

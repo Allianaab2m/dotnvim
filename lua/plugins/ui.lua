@@ -91,8 +91,7 @@ return {
 				return " " .. table.concat(clients, ", ")
 			end
 
-			--[[
-      local skkeleton_indicator = function()
+			local skkeleton_indicator = function()
 				if vim.fn["skkeleton#is_enabled"]() == true then
 					local base = "▼ "
 					local mode = vim.fn["skkeleton#mode"]()
@@ -107,7 +106,6 @@ return {
 					return "▽ OFF"
 				end
 			end
-      ]]
 
 			return {
 				options = {
@@ -135,7 +133,7 @@ return {
 					},
 					lualine_x = {
 						lsp_names,
-						-- skkeleton_indicator,
+						skkeleton_indicator,
 						{ require("lazy.status").updates, cond = require("lazy.status").has_updates },
 						{ "diff" },
 					},

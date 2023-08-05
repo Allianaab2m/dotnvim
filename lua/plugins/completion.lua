@@ -33,7 +33,7 @@ return {
 				window = {
 					completion = {
 						winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-            border = "single",
+						border = "single",
 						col_offset = -3,
 						side_padding = 1,
 					},
@@ -62,7 +62,7 @@ return {
 					{ name = "nvim_lsp" },
 					{ name = "vsnip" },
 					{ name = "path" },
-					-- { name = "skkeleton" },
+					{ name = "skkeleton" },
 				},
 				experimental = {
 					ghost_text = {
