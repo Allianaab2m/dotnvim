@@ -13,6 +13,14 @@ key("n", "H", "<Cmd>bprev<CR>", opts)
 key("v", "<", "<gv", opts)
 key("v", ">", ">gv", opts)
 
+key("n", "<Leader>t", "<Cmd>ToggleTerm<CR>", opts)
+key("t", "<Esc>", "<C-\\><C-n>", opts)
+
+key("n", "<C-h>", "<C-w>h")
+key("n", "<C-j>", "<C-w>j")
+key("n", "<C-k>", "<C-w>k")
+key("n", "<C-l>", "<C-w>l")
+
 --Telescope
 key("n", ";f", "<Cmd>Telescope find_files<CR>", opts)
 key("n", ";g", "<Cmd>Telescope kensaku<CR>", opts)

@@ -75,6 +75,7 @@ return {
     },
     config = function(_, opts)
       local Util = require("utils")
+      require("utils.lsp").autoformat = opts.autoformat
       Util.on_attach(function(client, buffer)
         if client.server_capabilities.inlayHintProvider then
           vim.lsp.buf.inlay_hint(buffer, true)
