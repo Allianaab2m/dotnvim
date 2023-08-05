@@ -126,7 +126,7 @@ return {
 						},
 					},
 					lualine_b = {
-						"branch",
+						{ "branch" },
 					},
 					lualine_c = {
 						{ "diagnostics" },
@@ -190,7 +190,7 @@ return {
 	{
 		"utilyre/barbecue.nvim",
 		name = "barbecue",
-		cmd = "Barbecue",
+		event = "LspAttach",
 		version = "*",
 		dependencies = {
 			"SmiteshP/nvim-navic",
@@ -212,6 +212,9 @@ return {
 				create_autocmd = false,
 			}
 		end,
+		config = function()
+			require("barbecue.ui").toggle(true)
+		end,
 	},
 	{
 		"mvllow/modes.nvim",
@@ -232,10 +235,6 @@ return {
 		event = "VeryLazy",
 	},
 	{
-		"tpope/vim-fugitive",
-		cmd = "Git",
-	},
-	{
 		"akinsho/toggleterm.nvim",
 		cmd = "ToggleTerm",
 		opts = true,
@@ -253,5 +252,10 @@ return {
 				show_current_context_start = true,
 			})
 		end,
+	},
+	{
+		"stevearc/dressing.nvim",
+		opts = true,
+		lazy = false,
 	},
 }
