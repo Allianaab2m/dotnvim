@@ -266,9 +266,6 @@ return {
 		dependencies = { "vim-denops/denops.vim" },
 		ft = { "markdown" },
 		cmd = { "PreviewMarkdown" },
-		init = function()
-			vim.g["bufpreview_browser"] = "firefox.exe"
-		end,
 		config = function()
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = "markdown",

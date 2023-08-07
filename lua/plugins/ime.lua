@@ -8,7 +8,6 @@ return {
 			eggLikeNewline = true,
 			globalDictionaries = {
 				{ "/usr/share/skk/SKK-JISYO.L", "euc-jp" },
-				"~/.skk/SKK-JISYO.emoji.utf8",
 			},
 		})
 	end,
