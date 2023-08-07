@@ -256,4 +256,26 @@ return {
 		opts = true,
 		lazy = false,
 	},
+	{
+		"folke/trouble.nvim",
+		opts = true,
+		lazy = false,
+	},
+	{
+		"kat0h/bufpreview.vim",
+		dependencies = { "vim-denops/denops.vim" },
+		ft = { "markdown" },
+		cmd = { "PreviewMarkdown" },
+		init = function()
+			vim.g["bufpreview_browser"] = "firefox.exe"
+		end,
+		config = function()
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "markdown",
+				callback = function()
+					vim.cmd([[PreviewMarkdown]])
+				end,
+			})
+		end,
+	},
 }

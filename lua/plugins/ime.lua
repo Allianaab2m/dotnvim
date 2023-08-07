@@ -6,6 +6,10 @@ return {
 		vim.keymap.set("i", "<C-j>", "<Plug>(skkeleton-toggle)")
 		vim.fn["skkeleton#config"]({
 			eggLikeNewline = true,
+			globalDictionaries = {
+				{ "/usr/share/skk/SKK-JISYO.L", "euc-jp" },
+				"~/.skk/SKK-JISYO.emoji.utf8",
+			},
 		})
 	end,
 }
