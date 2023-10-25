@@ -10,7 +10,7 @@ return {
 		lazy = false,
 		config = function()
 			require("hardtime").setup({
-				disabled_filetypes = { "qf", "netrw", "lazy", "mason", "oil", "toggleterm" },
+				disabled_filetypes = { "qf", "netrw", "lazy", "mason", "oil", "toggleterm", "alpha" },
 			})
 		end,
 	},

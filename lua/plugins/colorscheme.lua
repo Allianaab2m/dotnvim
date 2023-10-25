@@ -16,8 +16,21 @@ return {
 		name = "catppuccin",
 		opts = true,
 		lazy = false,
+		enabled = false,
 		config = function()
+			require("catppuccin").setup({
+				-- transparent_background = true,
+			})
 			vim.cmd([[ colorscheme catppuccin ]])
+		end,
+	},
+	{
+		"stevedylandev/flexoki-nvim",
+		name = "flexoki",
+		lazy = false,
+		config = function()
+			vim.cmd([[ colorscheme flexoki ]])
+			vim.cmd([[ hi PmenuSel guibg=#24837B guifg=#1C1B1A ]])
 		end,
 	},
 }

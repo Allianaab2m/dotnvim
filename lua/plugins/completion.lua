@@ -28,11 +28,11 @@ return {
 
 			return {
 				completion = {
-					completeopts = "menu,menuone,noinsert",
+					completeopt = "menu,menuone,noinsert",
 				},
 				window = {
 					completion = {
-						winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+						winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
 						border = "single",
 						col_offset = -3,
 						side_padding = 1,
@@ -90,8 +90,8 @@ return {
 					end, { "i", "s" }),
 					["<CR>"] = cmp.mapping({
 						i = function(fallback)
-							if cmp.visible() and cmp.get_active_entry() then
-								cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+							if cmp.visible() then
+								cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
 							else
 								fallback()
 							end

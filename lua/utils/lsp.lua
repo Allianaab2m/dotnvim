@@ -1,5 +1,7 @@
 local M = {}
 
+M.autoformat = true
+
 function M.format(opts)
 	local buf = vim.api.nvim_get_current_buf()
 	if vim.b.autoformat == false and not (opts and opts.force) then
@@ -10,6 +12,8 @@ function M.format(opts)
 
 	vim.lsp.buf.format(vim.tbl_deep_extend("force", {
 		bufnr = buf,
+		timeout_ms = 3000,
+		async = true,
 		filter = function(client)
 			if have_nls then
 				return client.name == "null-ls"
@@ -35,6 +39,7 @@ function M.format_on_attach(client, buf)
 			callback = function()
 				if M.autoformat then
 					M.format()
+					vim.cmd("write")
 				end
 			end,
 		})

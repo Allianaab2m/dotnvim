@@ -3,6 +3,7 @@ return {
 		"rcarriga/nvim-notify",
 		dependencies = { "MunifTanjim/nui.nvim" },
 		opts = {
+			background_colour = "#000000",
 			timeout = 3000,
 			max_height = function()
 				return math.floor(vim.o.lines * 0.75)
@@ -276,6 +277,23 @@ return {
 					vim.cmd([[PreviewMarkdown]])
 				end,
 			})
+		end,
+	},
+	{
+		"goolord/alpha-nvim",
+		lazy = false,
+		config = function()
+			local alpha = require("alpha")
+			local dashboard = require("alpha.themes.dashboard")
+			dashboard.section.header.val = {
+				[[]],
+			}
+			dashboard.section.buttons.val = {
+				dashboard.button("e", "New file", ":ene <BAR> startinsert<CR>"),
+				dashboard.button("q", "Quit nvim", ":qa<CR>"),
+        dashboard.button("f", "MRU", ":Telescope frecency<CR>")
+			}
+			alpha.setup(dashboard.config)
 		end,
 	},
 }

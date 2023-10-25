@@ -13,3 +13,24 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 		vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
 	end,
 })
+
+-- Auto organize import at Go lang
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*.go",
+	callback = function()
+		vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } }, apply = true })
+	end,
+})
+
+-- Disable relative number on insert mode
+vim.api.nvim_create_autocmd("InsertEnter", {
+	callback = function(event)
+		vim.opt.relativenumber = false
+	end,
+})
+
+vim.api.nvim_create_autocmd("InsertLeave", {
+	callback = function(event)
+		vim.opt.relativenumber = true
+	end,
+})

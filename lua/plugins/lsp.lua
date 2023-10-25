@@ -1,48 +1,49 @@
 return {
-  {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      { "folke/neoconf.nvim", cmd = "Neoconf", config = true },
-      { "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
-      { "simrat39/rust-tools.nvim", ft = { "rust" }, opts = {} }
-    },
-    opts = {
-      diagnostics = {
-        underline = true,
-        virtual_text = {
-          spacing = 4,
-          source = "if_many",
-          prefix = "icons",
-        },
-        severity_sort = true
-      },
-      capabilities = {},
-      autoformat = true,
-      format = {
-        formatting_options = nil,
-        timeout_ms = nil
-      },
-      servers = {
-        jsonls = {},
-        lua_ls = {
-          settings = {
-            Lua = {
-              workspace = {
-                checkThirdParty = false,
-              },
-              completion = {
-                callSnippet = "Replace"
-              },
-            },
-          },
-        },
-        tsserver = {
-          settings = {
-            typescript = {
-              inlayHints = {
+	{
+		"neovim/nvim-lspconfig",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			{ "folke/neoconf.nvim", cmd = "Neoconf", config = true },
+			{ "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			{ "simrat39/rust-tools.nvim", ft = { "rust" } },
+		},
+		opts = {
+			diagnostics = {
+				underline = true,
+				virtual_text = {
+					spacing = 4,
+					source = "if_many",
+					prefix = "icons",
+				},
+				severity_sort = true,
+			},
+			capabilities = {},
+			autoformat = true,
+			format = {
+				formatting_options = nil,
+				timeout_ms = nil,
+			},
+			servers = {
+				["rust_analyzer"] = {},
+				jsonls = {},
+				lua_ls = {
+					settings = {
+						Lua = {
+							workspace = {
+								checkThirdParty = false,
+							},
+							completion = {
+								callSnippet = "Replace",
+							},
+						},
+					},
+				},
+				tsserver = {
+					settings = {
+						typescript = {
+							inlayHints = {
 								includeInlayParameterNameHints = "all",
 								includeInlayParameterNameHintsWhenArgumentMatchesName = false,
 								includeInlayFunctionParameterTypeHints = true,
@@ -51,43 +52,43 @@ return {
 								includeInlayPropertyDeclarationTypeHints = true,
 								includeInlayFunctionLikeReturnTypeHints = true,
 								includeInlayEnumMemberValueHints = true,
-              },
-            },
-          },
-        },
-        denols = {
-          settings = {
-            lint = true,
-            unstable = true,
-            suggest = {
-              imports = {
-                hosts = {
-                  ["https://deno.land"] = true,
-                  ["https://cdn.nest.land"] = true,
-                  ["https://crux.land"] = true
-                },
-              },
-            },
-          },
-        },
-      },
-      setup = {},
-    },
-    config = function(_, opts)
-      local Util = require("utils")
-      require("utils.lsp").autoformat = opts.autoformat
-      Util.on_attach(function(client, buffer)
-        if client.server_capabilities.inlayHintProvider then
-          vim.lsp.buf.inlay_hint(buffer, true)
-        end
-        require("utils.lsp").format_on_attach(client, buffer)
-        require("utils.lsp").keymaps_on_attach(client, buffer)
-      end)
+							},
+						},
+					},
+				},
+				denols = {
+					settings = {
+						lint = true,
+						unstable = true,
+						suggest = {
+							imports = {
+								hosts = {
+									["https://deno.land"] = true,
+									["https://cdn.nest.land"] = true,
+									["https://crux.land"] = true,
+								},
+							},
+						},
+					},
+				},
+			},
+			setup = {},
+		},
+		config = function(_, opts)
+			local Util = require("utils")
+			require("utils.lsp").autoformat = opts.autoformat
+			Util.on_attach(function(client, buffer)
+				if client.server_capabilities.inlayHintProvider then
+					vim.lsp.buf.inlay_hint(buffer, true)
+				end
+				require("utils.lsp").format_on_attach(client, buffer)
+				require("utils.lsp").keymaps_on_attach(client, buffer)
+			end)
 
-      for name, icon in pairs(Util.icons.diagnostics) do
-        name = "DiagnosticSign" .. name
-        vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
-      end
+			for name, icon in pairs(Util.icons.diagnostics) do
+				name = "DiagnosticSign" .. name
+				vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
+			end
 
 			if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then
 				opts.diagnostics.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
@@ -101,25 +102,25 @@ return {
 					end
 			end
 
-      vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+			vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = "single"
-      })
+			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+				border = "single",
+			})
 
-      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = "single"
-      })
+			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+				border = "single",
+			})
 
-      local servers = opts.servers
-      local capabilities = vim.tbl_deep_extend(
-        "force",
-        {},
-        require("cmp_nvim_lsp").default_capabilities(),
-        vim.lsp.protocol.make_client_capabilities(),
-        {},
-        opts.capabilities or {}
-      )
+			local servers = opts.servers
+			local capabilities = vim.tbl_deep_extend(
+				"force",
+				{},
+				require("cmp_nvim_lsp").default_capabilities(),
+				vim.lsp.protocol.make_client_capabilities(),
+				{},
+				opts.capabilities or {}
+			)
 
 			local function setup(server)
 				local server_opts = vim.tbl_deep_extend("force", {
@@ -135,7 +136,13 @@ return {
 						return
 					end
 				end
-				require("lspconfig")[server].setup(server_opts)
+				if server == "rust_analyzer" then
+					local rt = require("rust-tools")
+					rt.setup({})
+					vim.keymap.set("n", "K", rt.hover_actions.hover_actions)
+				else
+					require("lspconfig")[server].setup(server_opts)
+				end
 			end
 
 			local have_mason, mlsp = pcall(require, "mason-lspconfig")
@@ -168,78 +175,99 @@ return {
 					return not is_deno(root_dir)
 				end)
 			end
-    end
-  },
-  {
-    "williamboman/mason.nvim",
-    cmd = "Mason",
-    opts = {
-      ensure_installed = {
-        "stylua"
-      }
-    },
-    config = function(_, opts)
-      require("mason").setup(opts)
-      local mr = require("mason-registry")
-      local function ensure_installed()
-        for _, tool in ipairs(opts.ensure_installed) do
-          local p = mr.get_package(tool)
-          if not p:is_installed() then
-            p:install()
-          end
-        end
-      end
-      if mr.refresh then
-        mr.refresh(ensure_installed)
-      else
-        ensure_installed()
-      end
-    end
-  },
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = { "mason.nvim" },
-    opts = function ()
-      local nls = require("null-ls")
-      return {
-        root_dir = require("null-ls.utils").root_pattern(
-          ".null-ls-root",
-          ".neoconf.json",
-          "Makefile",
-          ".git",
-          "package.json",
-          "deno.json",
-          "deno.jsonc"
-        ),
-        sources = {
-          nls.builtins.formatting.stylua,
-          nls.builtins.formatting.deno_fmt,
-          nls.builtins.diagnostics.deno_lint,
-          nls.builtins.diagnostics.textlint
-        }
-      }
-    end
-  },
-  {
-    "SmiteshP/nvim-navic",
-    event = { "LspAttach" },
-    opts = function ()
-      vim.api.nvim_create_augroup("LspAttach_navic", {})
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = "LspAttach_navic",
-        callback = function(args)
-          if not (args.data and args.data.client_id) then
-            return
-          end
-          
-          local client = vim.lsp.get_client_by_id(args.data.client_id)
-          if client.server_capabilities.documentSymbolProvider then
-            require("nvim-navic").attach(client, args.buf)
-          end
-        end
-      })
-      return {}
-    end
-  }
+		end,
+	},
+	{
+		"williamboman/mason.nvim",
+		cmd = "Mason",
+		opts = {
+			ensure_installed = {
+				"stylua",
+			},
+		},
+		config = function(_, opts)
+			require("mason").setup(opts)
+			local mr = require("mason-registry")
+			local function ensure_installed()
+				for _, tool in ipairs(opts.ensure_installed) do
+					local p = mr.get_package(tool)
+					if not p:is_installed() then
+						p:install()
+					end
+				end
+			end
+			if mr.refresh then
+				mr.refresh(ensure_installed)
+			else
+				ensure_installed()
+			end
+		end,
+	},
+	{
+		"jose-elias-alvarez/null-ls.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = { "mason.nvim" },
+		opts = function()
+			local nls = require("null-ls")
+			return {
+				root_dir = require("null-ls.utils").root_pattern(
+					".null-ls-root",
+					".neoconf.json",
+					"Makefile",
+					".git",
+					"package.json",
+					"deno.json",
+					"deno.jsonc"
+				),
+				sources = {
+					nls.builtins.formatting.stylua,
+					nls.builtins.formatting.deno_fmt.with({
+						condition = function(utils)
+							return not (utils.has_file({ ".prettierrc", ".prettierrc.js", "deno.json", "deno.jsonc" }))
+						end,
+						filetypes = { "typescript", "tsx" },
+					}),
+					nls.builtins.diagnostics.deno_lint.with({
+						condition = function(utils)
+							return not (utils.has_file({ ".eslintrc.json", ".eslintrc.js", "deno.json", "deno.jsonc" }))
+						end,
+					}),
+					nls.builtins.formatting.eslint.with({
+						condition = function(utils)
+							return utils.has_file({ ".eslintrc.json", ".eslintrc.js" })
+						end,
+						prefer_local = "node_modules/.bin",
+					}),
+					nls.builtins.formatting.prettier.with({
+						condition = function(utils)
+							return utils.has_file({ ".prettierrc", ".prettierrc.js" })
+						end,
+						prefer_local = "node_modules/.bin",
+					}),
+					nls.builtins.diagnostics.textlint,
+				},
+			}
+		end,
+	},
+	{
+		"SmiteshP/nvim-navic",
+		event = { "LspAttach" },
+		opts = function()
+			vim.api.nvim_create_augroup("LspAttach_navic", {})
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = "LspAttach_navic",
+				callback = function(args)
+					if not (args.data and args.data.client_id) then
+						return
+					end
+
+					local client = vim.lsp.get_client_by_id(args.data.client_id)
+					if client.server_capabilities.documentSymbolProvider then
+						require("nvim-navic").attach(client, args.buf)
+					end
+				end,
+			})
+			return {}
+		end,
+	},
 }

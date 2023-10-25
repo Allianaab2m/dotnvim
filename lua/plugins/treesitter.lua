@@ -30,6 +30,8 @@ return {
 				return true
 			end, opts.ensure_installed)
 		end
+		local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
+		ft_to_parser.mdx = "markdown"
 		require("nvim-treesitter.configs").setup(opts)
 		require("treesitter-context").setup()
 	end,

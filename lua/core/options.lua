@@ -8,6 +8,7 @@ local options = {
 	mouse = "a",
 	pumheight = 10,
 	relativenumber = true,
+  number = true,
 	showmode = false,
 	showtabline = 2,
 	smartcase = true,

@@ -4,6 +4,10 @@ return {
 	config = function()
 		require("denops-lazy").load("skkeleton")
 		vim.keymap.set("i", "<C-j>", "<Plug>(skkeleton-toggle)")
+		vim.fn["skkeleton#register_kanatable"]("rom", {
+			[","] = { "，", "" },
+			["."] = { "．", "" },
+		})
 		vim.fn["skkeleton#config"]({
 			eggLikeNewline = true,
 			globalDictionaries = {
