@@ -21,12 +21,6 @@ key("n", "<C-j>", "<C-w>j")
 key("n", "<C-k>", "<C-w>k")
 key("n", "<C-l>", "<C-w>l")
 
---Telescope
-key("n", ";f", "<Cmd>Telescope find_files<CR>", opts)
-key("n", ";g", "<Cmd>Telescope kensaku<CR>", opts)
-key("n", ";lg", "<Cmd>Telescope live_grep<CR>", opts)
-key("n", ";b", "<Cmd>Telescope buffers<CR>", opts)
-
 key("n", "<C-Up>", ":resize -2<CR>", opts)
 key("n", "<C-Down>", ":resize +2<CR>", opts)
 key("n", "<C-Left>", ":vertical resize -2<CR>", opts)

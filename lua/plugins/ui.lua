@@ -1,26 +1,12 @@
+local function lualine_lspnames()
+	local clients = {}
+	for _, client in ipairs(vim.lsp.get_active_clients({ bufnr = 0 })) do
+		table.insert(clients, client.name)
+	end
+	return " " .. table.concat(clients, ", ")
+end
+
 return {
-	{
-		"rcarriga/nvim-notify",
-		dependencies = { "MunifTanjim/nui.nvim" },
-		opts = {
-			background_colour = "#000000",
-			timeout = 3000,
-			max_height = function()
-				return math.floor(vim.o.lines * 0.75)
-			end,
-			max_width = function()
-				return math.floor(vim.o.columns * 0.75)
-			end,
-		},
-		init = function()
-			local Util = require("utils")
-			if not Util.has("noice.nvim") then
-				Util.on_very_lazy(function()
-					vim.notify = require("notify")
-				end)
-			end
-		end,
-	},
 	{
 		"folke/noice.nvim",
 		event = "VeryLazy",
@@ -70,44 +56,16 @@ return {
 				},
 			},
 		},
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"rcarriga/nvim-notify",
+		},
 	},
 	{
 		"nvim-lualine/lualine.nvim",
 		event = "VeryLazy",
 		opts = function()
 			local icons = require("utils").icons.modes
-			local lsp_names = function()
-				local clients = {}
-				for _, client in ipairs(vim.lsp.get_active_clients({ bufnr = 0 })) do
-					if client.name == "null-ls" then
-						local sources = {}
-						for _, source in ipairs(require("null-ls.sources").get_available(vim.bo.filetype)) do
-							table.insert(sources, source.name)
-						end
-						table.insert(clients, "null-ls(" .. table.concat(sources, ", ") .. ")")
-					else
-						table.insert(clients, client.name)
-					end
-				end
-				return " " .. table.concat(clients, ", ")
-			end
-
-			local skkeleton_indicator = function()
-				if vim.fn["skkeleton#is_enabled"]() == true then
-					local base = "▼ "
-					local mode = vim.fn["skkeleton#mode"]()
-					if mode == "hira" then
-						return base .. "ひら"
-					elseif mode == "kata" then
-						return base .. "カタ"
-					else
-						return base
-					end
-				else
-					return "▽ OFF"
-				end
-			end
-
 			return {
 				options = {
 					theme = "auto",
@@ -128,15 +86,16 @@ return {
 						{ "branch" },
 					},
 					lualine_c = {
-						{ "diagnostics" },
 						{ "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
 						{ "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
+						{ "diagnostics" },
 					},
 					lualine_x = {
-						lsp_names,
-						skkeleton_indicator,
+						lualine_lspnames,
+						-- skkeleton_indicator,
 						{ require("lazy.status").updates, cond = require("lazy.status").has_updates },
 						{ "diff" },
+						{ "datetime", style = "%m/%d %H:%M" },
 					},
 					lualine_y = {
 						{ "progress", separator = " ", padding = { left = 1, right = 0 } },
@@ -144,7 +103,37 @@ return {
 					},
 					lualine_z = {},
 				},
+				winbar = {
+					lualine_c = {
+						{
+							"navic",
+							color_correction = nil,
+							navic_opts = nil,
+						},
+					},
+				},
 			}
+		end,
+	},
+	{
+		"akinsho/bufferline.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("bufferline").setup({
+				options = {
+					diagnostics = "nvim_lsp",
+					mode = "buffers",
+					diagnostics_indicator = function(count, level, diagnostics_dict, context)
+						local s = " "
+						for e, n in pairs(diagnostics_dict) do
+							local sym = e == "error" and " " or (e == "warning" and " " or "")
+							s = s .. n .. sym
+						end
+						return s
+					end,
+				},
+				highlights = {},
+			})
 		end,
 	},
 	{
@@ -155,145 +144,61 @@ return {
 		end,
 	},
 	{
-		"akinsho/bufferline.nvim",
-		event = { "BufReadPost" },
-		opts = {
-			options = {
-				diagnostics = "nvim_lsp",
-				separator_style = "slant",
-				indicator = {
-					style = "underline",
-				},
-				close_command = "bdelete! %d",
-				diagnostics_indicator = function(count, _, _, _)
-					if count > 9 then
-						return "9+"
-					end
-					return tostring(count)
-				end,
-				offsets = {
-					{
-						filetype = "neo-tree",
-						text = "Explorer",
-						text_align = "center",
-					},
-				},
-				hover = {
-					enabled = true,
-					delay = 0,
-					reveal = { "close" },
-				},
-			},
-		},
+		"RRethy/vim-illuminate",
+		init = function()
+			vim.g.Illuminate_delay = 500
+			require("utils").on_attach(function(client, bufnr)
+				require("illuminate").on_attach(client)
+			end)
+		end,
 	},
 	{
-		"utilyre/barbecue.nvim",
-		name = "barbecue",
-		event = "LspAttach",
-		version = "*",
+		"SmiteshP/nvim-navic",
 		dependencies = {
-			"SmiteshP/nvim-navic",
-			"nvim-tree/nvim-web-devicons",
+			"neovim/nvim-lspconfig",
+			"onsails/lspkind.nvim",
 		},
-		opts = function()
-			vim.api.nvim_create_autocmd({
-				"WinScrolled",
-				"BufWinEnter",
-				"CursorHold",
-				"InsertLeave",
-			}, {
-				group = vim.api.nvim_create_augroup("barbecue.updater", {}),
-				callback = function()
-					require("barbecue.ui").update()
-				end,
-			})
-			return {
-				create_autocmd = false,
-			}
+		init = function()
+			vim.g.navic_silence = true
+			require("utils").on_attach(function(client, bufnr)
+				if client.server_capabilities.documentSymbolProvider then
+					require("nvim-navic").attach(client, bufnr)
+				end
+			end)
 		end,
 		config = function()
-			require("barbecue.ui").toggle(true)
-		end,
-	},
-	{
-		"mvllow/modes.nvim",
-		tag = "v0.2.0",
-		event = { "BufReadPost", "BufNewFile" },
-		opts = {
-			colors = {
-				copy = "#DEB974",
-				delete = "#EC7279",
-				insert = "#A0C980",
-				visual = "#D38AEA",
-			},
-		},
-	},
-	{
-		"lewis6991/gitsigns.nvim",
-		opts = true,
-		event = "VeryLazy",
-	},
-	{
-		"akinsho/toggleterm.nvim",
-		cmd = "ToggleTerm",
-		opts = true,
-	},
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		event = { "BufWinEnter" },
-		config = function()
-			vim.opt.list = true
-			vim.opt.listchars:append("space:⋅")
-			vim.opt.listchars:append("eol:↴")
-			require("indent_blankline").setup({
-				space_char_blankline = " ",
-				show_current_context = true,
-				show_current_context_start = true,
+			local symbol_map = {}
+			for k, v in pairs(require("lspkind").symbol_map) do
+				symbol_map[k] = v .. " "
+			end
+
+			require("nvim-navic").setup({
+				icons = symbol_map,
+				highlight = false,
+				separator = " > ",
+				depth_limit = 0,
+				depth_limit_indicator = "..",
 			})
 		end,
 	},
 	{
 		"stevearc/dressing.nvim",
-		opts = true,
+		opts = {},
 		lazy = false,
 	},
 	{
-		"folke/trouble.nvim",
-		opts = true,
-		lazy = false,
-	},
-	{
-		"kat0h/bufpreview.vim",
-		dependencies = { "vim-denops/denops.vim" },
-		ft = { "markdown" },
-		cmd = { "PreviewMarkdown" },
-		init = function()
-			vim.g["bufpreview_browser"] = "firefox.exe"
-		end,
-		config = function()
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = "markdown",
-				callback = function()
-					vim.cmd([[PreviewMarkdown]])
+		"akinsho/toggleterm.nvim",
+		cmd = "ToggleTerm",
+		keys = {
+			{
+				"<leader>t",
+				function()
+					vim.cmd([[ToggleTerm]])
 				end,
-			})
-		end,
-	},
-	{
-		"goolord/alpha-nvim",
-		lazy = false,
-		config = function()
-			local alpha = require("alpha")
-			local dashboard = require("alpha.themes.dashboard")
-			dashboard.section.header.val = {
-				[[]],
-			}
-			dashboard.section.buttons.val = {
-				dashboard.button("e", "New file", ":ene <BAR> startinsert<CR>"),
-				dashboard.button("q", "Quit nvim", ":qa<CR>"),
-        dashboard.button("f", "MRU", ":Telescope frecency<CR>")
-			}
-			alpha.setup(dashboard.config)
-		end,
+				mode = "",
+				desc = "",
+			},
+		},
+		opts = true,
 	},
 }
