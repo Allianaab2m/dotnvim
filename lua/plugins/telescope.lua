@@ -14,6 +14,7 @@ return {
 					require("telescope").load_extension("kensaku")
 				end,
 			},
+			"nvim-telescope/telescope-file-browser.nvim",
 		},
 		config = function()
 			local telescope = require("telescope")
@@ -30,18 +31,35 @@ return {
 							end,
 						},
 					},
-					layout_strategy = "horizontal",
-					layout_config = { prompt_position = "top" },
+					layout_strategy = "vertical",
+					layout_config = { prompt_position = "bottom" },
 					sorting_strategy = "ascending",
 					winblend = 0,
 					borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
 				},
+				extensions = {
+					file_browser = {
+						layout_strategy = "horizontal",
+					},
+				},
 			})
+
+			require("telescope").load_extension("file_browser")
+
+			local key = vim.keymap.set
+			local opts = { noremap = true, silent = true }
+
+			key("n", ";;", "<Cmd>Telescope<CR>", opts)
+			key("n", ";f", "<Cmd>Telescope find_files<CR>", opts)
+			key("n", ";d", "<Cmd>Telescope file_browser<CR>", opts)
+			key("n", ";g", "<Cmd>Telescope kensaku<CR>", opts)
+			key("n", ";lg", "<Cmd>Telescope live_grep<CR>", opts)
+			key("n", ";b", "<Cmd>Telescope buffers<CR>", opts)
 		end,
 	},
 	{
 		"nvim-telescope/telescope-frecency.nvim",
-    lazy = false,
+		lazy = false,
 		config = function()
 			require("telescope").load_extension("frecency")
 		end,

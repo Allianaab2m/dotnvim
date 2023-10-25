@@ -1,36 +1,19 @@
 return {
 	{
-		"sainnhe/edge",
+		"dasupradyumna/midnight.nvim",
 		lazy = false,
 		enabled = false,
-		config = function()
-			vim.g["edge_style"] = "aura"
-			vim.g["edge_dim_foreground"] = 1
-			vim.g["edge_dim_inactive_windows"] = 1
-			vim.g["edge_better_performance"] = 1
-			vim.cmd([[ colorscheme edge ]])
+		priority = 1000,
+		opts = function()
+			vim.cmd.colorscheme("midnight")
 		end,
 	},
 	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		opts = true,
+		"cocopon/iceberg.vim",
 		lazy = false,
-		enabled = false,
+		priority = 1000,
 		config = function()
-			require("catppuccin").setup({
-				-- transparent_background = true,
-			})
-			vim.cmd([[ colorscheme catppuccin ]])
-		end,
-	},
-	{
-		"stevedylandev/flexoki-nvim",
-		name = "flexoki",
-		lazy = false,
-		config = function()
-			vim.cmd([[ colorscheme flexoki ]])
-			vim.cmd([[ hi PmenuSel guibg=#24837B guifg=#1C1B1A ]])
+			vim.cmd.colorscheme("iceberg")
 		end,
 	},
 }
