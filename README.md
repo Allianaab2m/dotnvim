@@ -1,5 +1,8 @@
 # dotnvim/
 
+## Deprecated
+This repository will not be updated and now be updated in the `nvim` directory of the merged (dotfiles)[https://github.com/Allianaab2m/dotfiles/tree/main/nvim] repository.
+
 <a href="https://dotfyle.com/Allianaab2m/dotnvim"><img src="https://dotfyle.com/Allianaab2m/dotnvim/badges/plugins?style=flat" /></a>
 <a href="https://dotfyle.com/Allianaab2m/dotnvim"><img src="https://dotfyle.com/Allianaab2m/dotnvim/badges/leaderkey?style=flat" /></a>
 <a href="https://dotfyle.com/Allianaab2m/dotnvim"><img src="https://dotfyle.com/Allianaab2m/dotnvim/badges/plugin-manager?style=flat" /></a>
